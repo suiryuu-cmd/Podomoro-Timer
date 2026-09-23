@@ -11,6 +11,24 @@ node_modules
 dist
 dist-ssr
 *.local
+.vite
+.cache
+coverage
+*.tsbuildinfo
+
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+.npmrc
+.yarnrc
+.pnpmfile.cjs
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
 
 # Editor directories and files
 .vscode/*
