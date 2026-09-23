@@ -22,13 +22,11 @@ Proyek belajar untuk memahami dasar **React**, **TypeScript**, dan **Vite** deng
 Pastikan [Node.js](https://nodejs.org/) sudah terpasang, lalu jalankan:
 
 ```bash
-git clone https://github.com/suiryuu-cmd/Podomoro-Timer.git
 cd Podomoro-Timer
 npm install
 npm run dev
 ```
 
-Buka alamat yang ditampilkan Vite di browser (biasanya `http://localhost:5173`).
 
 ## Perintah yang tersedia
 
