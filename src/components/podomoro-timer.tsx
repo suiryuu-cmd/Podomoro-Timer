@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useInterval } from '../hooks/use-interfal'
+import { useInterval } from '../hooks/use-interval'
 import { Button } from './button'
 import { Timer } from './timer'
 
