@@ -4,13 +4,14 @@ Proyek belajar untuk memahami dasar **React**, **TypeScript**, dan **Vite** deng
 
 ## Fitur
 
-- Timer fokus 25 menit
-- Istirahat pendek 5 menit
-- Istirahat panjang 15 menit setiap 4 siklus fokus
-- Tombol mulai, jeda, dan reset
-- Cincin progres, penanda 4 siklus, dan warna berbeda untuk tiap fase
+- Timer fokus 25 menit, istirahat pendek 5 menit, dan istirahat panjang 15 menit setiap 4 sesi fokus
+- Tombol mulai, jeda, lanjut, dan reset. Label tombol menyesuaikan keadaan (Start Focus, Start Break, Resume, Pause)
+- Cincin progres berbezel ala jam, dengan warna berbeda untuk tiap fase
+- Penanda sesi selesai ("2 of 4 sessions done")
 - Sisa waktu tampil di judul tab browser
-- Bunyi lonceng saat fase selesai (bisa di-mute)
+- Bunyi lonceng saat fase selesai, bisa di-mute
+- Tema terang dan gelap mengikuti pengaturan sistem
+- Bisa dipakai dengan keyboard, dan animasi mengikuti pengaturan `prefers-reduced-motion`
 
 ## Teknologi
 
@@ -21,14 +22,16 @@ Proyek belajar untuk memahami dasar **React**, **TypeScript**, dan **Vite** deng
 
 ## Menjalankan proyek
 
-Pastikan [Node.js](https://nodejs.org/) sudah terpasang, lalu jalankan:
+Pastikan [Node.js](https://nodejs.org/) versi 20.19 ke atas (atau 22.13 ke atas) sudah terpasang, lalu jalankan:
 
 ```bash
+git clone https://github.com/suiryuu-cmd/Podomoro-Timer.git
 cd Podomoro-Timer
 npm install
 npm run dev
 ```
 
+Buka alamat yang ditampilkan Vite di browser (biasanya `http://localhost:5173`).
 
 ## Perintah yang tersedia
 
@@ -42,10 +45,11 @@ npm run build  # memeriksa TypeScript dan membuat build produksi
 
 ```text
 src/
-├── components/  # tampilan timer dan tombol
+├── components/  # komponen PomodoroTimer dan ikon SVG
 ├── hooks/       # hook interval React
-├── utils/       # format waktu
-└── App.tsx      # komponen aplikasi utama
+├── utils/       # format waktu dan bunyi lonceng (Web Audio)
+├── App.tsx      # komponen aplikasi utama
+└── index.css    # seluruh style, termasuk tema terang dan gelap
 ```
 
 ## Catatan keamanan
