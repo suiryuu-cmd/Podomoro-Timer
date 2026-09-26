@@ -30,6 +30,10 @@ coverage
 *.jks
 *.keystore
 
+# Local tooling (Claude Code / Impeccable)
+.claude/
+.impeccable/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
