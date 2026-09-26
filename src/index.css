@@ -1,3 +1,18 @@
+/* Self-hosted, Latin subset only (licenses in src/fonts). */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./fonts/bricolage-grotesque-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 300;
+  font-display: swap;
+  src: url('./fonts/jetbrains-mono-300-latin.woff2') format('woff2');
+}
+
 /* Per-phase accent. Registered so the color crossfades when the phase changes. */
 @property --accent {
   syntax: '<color>';
