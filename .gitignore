@@ -33,6 +33,7 @@ coverage
 # Local tooling (Claude Code / Impeccable)
 .claude/
 .impeccable/
+graphify-out/
 
 # Editor directories and files
 .vscode/*
