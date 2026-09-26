@@ -31,6 +31,13 @@ export function PomodoroTimer() {
   // The long break shows all dots filled; the next focus round starts over.
   const filledDots = phase === 'longBreak' ? CYCLES : completedCycles % CYCLES
 
+  const startLabel =
+    seconds < PHASES[phase].seconds
+      ? 'Resume'
+      : phase === 'work'
+        ? 'Start Focus'
+        : 'Start Break'
+
   useEffect(() => {
     document.title = `${secondsToMinutes(seconds)} · ${PHASES[phase].label}`
   }, [seconds, phase])
@@ -69,6 +76,13 @@ export function PomodoroTimer() {
         <svg className="ring" viewBox="0 0 240 240" aria-hidden="true">
           <circle className="ring-track" cx="120" cy="120" r="112" />
           <circle
+            className="ring-ticks"
+            cx="120"
+            cy="120"
+            r="100"
+            pathLength={60}
+          />
+          <circle
             className="ring-progress"
             cx="120"
             cy="120"
@@ -80,19 +94,20 @@ export function PomodoroTimer() {
         <div className="readout">
           <output className="timer">{secondsToMinutes(seconds)}</output>
           <p className="phase" aria-live="polite">
-            {PHASES[phase].label}
+            <span key={phase}>{PHASES[phase].label}</span>
           </p>
         </div>
       </div>
 
-      <div
-        className="cycles"
-        role="img"
-        aria-label={`${filledDots} of ${CYCLES} focus sessions completed`}
-      >
-        {Array.from({ length: CYCLES }, (_, i) => (
-          <span key={i} className="dot" data-filled={i < filledDots} />
-        ))}
+      <div className="cycles">
+        <div className="dots" aria-hidden="true">
+          {Array.from({ length: CYCLES }, (_, i) => (
+            <span key={i} className="dot" data-filled={i < filledDots} />
+          ))}
+        </div>
+        <p className="session">
+          {filledDots} of {CYCLES} sessions done
+        </p>
       </div>
 
       <div className="controls">
@@ -111,7 +126,7 @@ export function PomodoroTimer() {
           onClick={() => setIsRunning((running) => !running)}
         >
           {isRunning ? <PauseIcon /> : <PlayIcon />}
-          {isRunning ? 'Pause' : 'Start'}
+          {isRunning ? 'Pause' : startLabel}
         </button>
         <button
           type="button"

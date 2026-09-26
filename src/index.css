@@ -14,8 +14,23 @@
   --focus: oklch(0.7 0.19 30);
   --short-break: oklch(0.85 0.14 172);
   --long-break: oklch(0.78 0.13 285);
+  --on-accent: var(--ground);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  color-scheme: dark;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ground: oklch(0.975 0.006 265);
+    --track: oklch(0.9 0.012 265);
+    --track-hover: oklch(0.85 0.015 265);
+    --text: oklch(0.22 0.02 265);
+    --muted: oklch(0.45 0.02 265);
+    --focus: oklch(0.55 0.19 30);
+    --short-break: oklch(0.5 0.11 172);
+    --long-break: oklch(0.5 0.15 285);
+    --on-accent: oklch(0.985 0.005 265);
+  }
 }
 
 * {
@@ -34,7 +49,7 @@ body {
 
 ::selection {
   background: var(--accent, var(--focus));
-  color: var(--ground);
+  color: var(--on-accent);
 }
 
 .container {
@@ -60,7 +75,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
   transition: --accent 700ms var(--ease-out);
 }
 
@@ -113,6 +128,13 @@ body {
   stroke: var(--track);
 }
 
+/* 60 hairline ticks, one per minute of a focus block, like a watch bezel. */
+.ring-ticks {
+  stroke: var(--track);
+  stroke-width: 7;
+  stroke-dasharray: 0.12 0.88;
+}
+
 .ring-progress {
   stroke: var(--accent);
   stroke-linecap: round;
@@ -144,7 +166,26 @@ body {
   color: var(--accent);
 }
 
+.phase span {
+  display: inline-block;
+  animation: rise 500ms var(--ease-out);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
 .cycles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.dots {
   display: flex;
   gap: 12px;
 }
@@ -161,10 +202,17 @@ body {
   background: var(--accent);
 }
 
+.session {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
 .controls {
+  width: 100%;
+  max-width: 340px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 button {
@@ -189,22 +237,24 @@ button:active {
 }
 
 .primary-button {
-  min-width: 152px;
+  flex: 1;
   height: 64px;
-  padding: 0 32px;
+  padding: 0 16px;
   gap: 10px;
   border-radius: 999px;
   background: var(--accent);
-  color: var(--ground);
-  font-size: 1.125rem;
+  color: var(--on-accent);
+  font-size: 1.0625rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .primary-button:hover {
-  background: color-mix(in oklch, var(--accent), white 12%);
+  background: color-mix(in oklch, var(--accent), var(--text) 12%);
 }
 
 .icon-button {
+  flex: none;
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -216,9 +266,21 @@ button:active {
   background: var(--track-hover);
 }
 
+@media (max-width: 360px) {
+  .controls {
+    gap: 8px;
+  }
+
+  .icon-button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before {
+    animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
