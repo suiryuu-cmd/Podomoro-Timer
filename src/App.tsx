@@ -1,10 +1,10 @@
-import { PodomoroTimer } from './components/podomoro-timer'
+import { PomodoroTimer } from './components/pomodoro-timer'
 
 function App() {
   return (
     <main className="container">
-      <PodomoroTimer
-        podomoroTimer={1500}
+      <PomodoroTimer
+        pomodoroTimer={1500}
         shortRestTimer={300}
         longRestTimer={900}
         cycles={4}

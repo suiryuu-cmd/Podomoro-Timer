@@ -1,4 +1,4 @@
-# Podomoro Timer
+# Pomodoro Timer
 
 Proyek belajar untuk memahami dasar **React**, **TypeScript**, dan **Vite** dengan membuat timer Pomodoro sederhana.
 
@@ -8,7 +8,9 @@ Proyek belajar untuk memahami dasar **React**, **TypeScript**, dan **Vite** deng
 - Istirahat pendek 5 menit
 - Istirahat panjang 15 menit setiap 4 siklus fokus
 - Tombol mulai, jeda, dan reset
-- Tampilan waktu dalam format `mm:ss`
+- Cincin progres, penanda 4 siklus, dan warna berbeda untuk tiap fase
+- Sisa waktu tampil di judul tab browser
+- Bunyi lonceng saat fase selesai (bisa di-mute)
 
 ## Teknologi
 
