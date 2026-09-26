@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useInterval } from '../hooks/use-interval'
 import { chime } from '../utils/chime'
 import { secondsToMinutes } from '../utils/seconds-to-minutes'
-import { Button } from './button'
 import {
   MutedIcon,
   PauseIcon,
@@ -10,50 +9,30 @@ import {
   ResetIcon,
   VolumeIcon,
 } from './icons'
-import { Timer } from './timer'
 
-interface PomodoroTimerProps {
-  pomodoroTimer: number
-  shortRestTimer: number
-  longRestTimer: number
-  cycles: number
+const PHASES = {
+  work: { label: 'Focus', seconds: 1500 },
+  shortBreak: { label: 'Short break', seconds: 300 },
+  longBreak: { label: 'Long break', seconds: 900 },
 }
+const CYCLES = 4
 
-type TimerPhase = 'work' | 'shortBreak' | 'longBreak'
+type TimerPhase = keyof typeof PHASES
 
-const PHASE_LABEL: Record<TimerPhase, string> = {
-  work: 'Focus',
-  shortBreak: 'Short break',
-  longBreak: 'Long break',
-}
-
-export function PomodoroTimer({
-  pomodoroTimer,
-  shortRestTimer,
-  longRestTimer,
-  cycles,
-}: PomodoroTimerProps) {
-  const [seconds, setSeconds] = useState(pomodoroTimer)
+export function PomodoroTimer() {
+  const [seconds, setSeconds] = useState(PHASES.work.seconds)
   const [isRunning, setIsRunning] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [completedCycles, setCompletedCycles] = useState(0)
   const [phase, setPhase] = useState<TimerPhase>('work')
 
-  const phaseTotal = {
-    work: pomodoroTimer,
-    shortBreak: shortRestTimer,
-    longBreak: longRestTimer,
-  }[phase]
-  const progress = 1 - seconds / phaseTotal
+  const progress = 1 - seconds / PHASES[phase].seconds
 
-  // A finished long-break round shows all dots filled until the next focus starts.
-  const filledDots =
-    completedCycles > 0 && completedCycles % cycles === 0
-      ? cycles
-      : completedCycles % cycles
+  // The long break shows all dots filled; the next focus round starts over.
+  const filledDots = phase === 'longBreak' ? CYCLES : completedCycles % CYCLES
 
   useEffect(() => {
-    document.title = `${secondsToMinutes(seconds)} · ${PHASE_LABEL[phase]}`
+    document.title = `${secondsToMinutes(seconds)} · ${PHASES[phase].label}`
   }, [seconds, phase])
 
   useInterval(() => {
@@ -65,24 +44,21 @@ export function PomodoroTimer({
     setIsRunning(false)
     if (!isMuted) chime()
 
+    let next: TimerPhase = 'work'
     if (phase === 'work') {
       const nextCycle = completedCycles + 1
-      const isLongBreak = nextCycle % cycles === 0
       setCompletedCycles(nextCycle)
-      setPhase(isLongBreak ? 'longBreak' : 'shortBreak')
-      setSeconds(isLongBreak ? longRestTimer : shortRestTimer)
-      return
+      next = nextCycle % CYCLES === 0 ? 'longBreak' : 'shortBreak'
     }
-
-    setPhase('work')
-    setSeconds(pomodoroTimer)
+    setPhase(next)
+    setSeconds(PHASES[next].seconds)
   }, isRunning ? 1000 : null)
 
   function resetTimer() {
     setIsRunning(false)
     setCompletedCycles(0)
     setPhase('work')
-    setSeconds(pomodoroTimer)
+    setSeconds(PHASES.work.seconds)
   }
 
   return (
@@ -102,9 +78,9 @@ export function PomodoroTimer({
           />
         </svg>
         <div className="readout">
-          <Timer seconds={seconds} />
+          <output className="timer">{secondsToMinutes(seconds)}</output>
           <p className="phase" aria-live="polite">
-            {PHASE_LABEL[phase]}
+            {PHASES[phase].label}
           </p>
         </div>
       </div>
@@ -112,30 +88,33 @@ export function PomodoroTimer({
       <div
         className="cycles"
         role="img"
-        aria-label={`${filledDots} of ${cycles} focus sessions completed`}
+        aria-label={`${filledDots} of ${CYCLES} focus sessions completed`}
       >
-        {Array.from({ length: cycles }, (_, i) => (
+        {Array.from({ length: CYCLES }, (_, i) => (
           <span key={i} className="dot" data-filled={i < filledDots} />
         ))}
       </div>
 
       <div className="controls">
-        <Button
+        <button
+          type="button"
           className="icon-button"
           onClick={resetTimer}
           aria-label="Reset timer"
           title="Reset"
         >
           <ResetIcon />
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           className="primary-button"
           onClick={() => setIsRunning((running) => !running)}
         >
           {isRunning ? <PauseIcon /> : <PlayIcon />}
           {isRunning ? 'Pause' : 'Start'}
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           className="icon-button"
           onClick={() => setIsMuted((muted) => !muted)}
           aria-label="Mute chime"
@@ -143,7 +122,7 @@ export function PomodoroTimer({
           title={isMuted ? 'Unmute' : 'Mute'}
         >
           {isMuted ? <MutedIcon /> : <VolumeIcon />}
-        </Button>
+        </button>
       </div>
     </section>
   )

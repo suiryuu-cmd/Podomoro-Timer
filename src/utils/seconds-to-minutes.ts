@@ -1,8 +1,5 @@
-import { zeroLeft } from './zero-left'
+const pad = (n: number): string => Math.floor(n).toString().padStart(2, '0')
 
 export function secondsToMinutes(seconds: number): string {
-  const remainingSeconds = Math.max(0, seconds)
-  const min = zeroLeft(remainingSeconds / 60)
-  const sec = zeroLeft(remainingSeconds % 60)
-  return `${min}:${sec}`
+  return `${pad(seconds / 60)}:${pad(seconds % 60)}`
 }
